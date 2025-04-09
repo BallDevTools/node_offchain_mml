@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <%- include('../partials/header') %>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                แดชบอร์ด
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/my-nft">
+                                <i class="bi bi-image me-2"></i>
+                                NFT ของฉัน
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/upgrade">
+                                <i class="bi bi-arrow-up-circle me-2"></i>
+                                อัพเกรดแผนสมาชิก
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/referrals">
+                                <i class="bi bi-people me-2"></i>
+                                การอ้างอิง
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/transactions">
+                                <i class="bi bi-list-ul me-2"></i>
+                                ประวัติธุรกรรม
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/user/profile">
+                                <i class="bi bi-person-circle me-2"></i>
+                                โปรไฟล์
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>การดำเนินการ</span>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/exit">
+                                <i class="bi bi-box-arrow-left me-2"></i>
+                                ยกเลิกสมาชิก
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="disconnectWallet()">
+                                <i class="bi bi-power me-2"></i>
+                                ออกจากระบบ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">โปรไฟล์ของฉัน</h1>
+                </div>
+                
+                <!-- Wallet Connection Check -->
+                <div id="wallet-not-connected" class="alert alert-warning d-flex align-items-center" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>
+                        คุณยังไม่ได้เชื่อมต่อกระเป๋าเงิน กรุณา <a href="#" onclick="connectWallet()" class="alert-link">เชื่อมต่อกระเป๋าเงิน</a> เพื่อดูโปรไฟล์ของคุณ
+                    </div>
+                </div>
+                
+                <!-- Main Profile Content (Hidden until wallet connected) -->
+                <div id="profile-content" class="d-none">
+                    <!-- Loading state -->
+                    <div id="profile-loading" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">กำลังโหลด...</span>
+                        </div>
+                        <p class="mt-3">กำลังโหลดข้อมูลโปรไฟล์...</p>
+                    </div>
+                    
+                    <!-- Error state -->
+                    <div id="profile-error" class="d-none">
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            เกิดข้อผิดพลาดในการโหลดข้อมูลโปรไฟล์: <span id="error-message">เกิดข้อผิดพลาด</span>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary" onclick="initProfilePage()">ลองใหม่</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Profile details -->
+                    <div id="profile-details" class="d-none">
+                        <div class="row">
+                            <!-- Profile Info Card -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">ข้อมูลบัญชี</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">ที่อยู่กระเป๋าเงิน</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" value="" id="wallet-address" readonly>
+                                                <button class="btn btn-outline-primary" type="button" id="copy-address">
+                                                    <i class="bi bi-clipboard"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">สถานะสมาชิก</label>
+                                            <div class="form-control-plaintext fw-bold" id="member-status">กำลังโหลด...</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">แผนสมาชิก</label>
+                                            <div class="form-control-plaintext" id="membership-plan">กำลังโหลด...</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">วันที่ลงทะเบียน</label>
+                                            <div class="form-control-plaintext" id="register-date">กำลังโหลด...</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold">อัพเดตล่าสุด</label>
+                                            <div class="form-control-plaintext" id="last-update">กำลังโหลด...</div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">การอ้างอิงทั้งหมด</label>
+                                                <div class="form-control-plaintext" id="referral-count">0</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-bold">รายได้ทั้งหมด</label>
+                                                <div class="form-control-plaintext" id="total-earnings">0 USDT</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- NFT Card -->
+                            <div class="col-md-6 mb-4" id="nft-section">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">NFT สมาชิกของฉัน</h5>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <img id="nft-image" src="/img/placeholder-nft.png" alt="NFT Image" class="img-fluid rounded shadow mb-3" style="max-height: 250px;">
+                                        <h5 id="nft-name" class="mb-2">กำลังโหลด...</h5>
+                                        <p class="text-muted mb-3">Token ID: <span id="nft-id">-</span></p>
+                                        <div class="d-grid gap-2">
+                                            <a href="/user/my-nft" class="btn btn-primary">
+                                                <i class="bi bi-pencil-square me-2"></i> จัดการ NFT
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Notification Settings -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">การตั้งค่าการแจ้งเตือน</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="notify-transaction" checked>
+                                            <label class="form-check-label" for="notify-transaction">แจ้งเตือนเมื่อมีธุรกรรมใหม่</label>
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="notify-referral" checked>
+                                            <label class="form-check-label" for="notify-referral">แจ้งเตือนเมื่อมีการอ้างอิงใหม่</label>
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="notify-system" checked>
+                                            <label class="form-check-label" for="notify-system">แจ้งเตือนข่าวสารและอัพเดทจากระบบ</label>
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="notify-email">
+                                            <label class="form-check-label" for="notify-email">รับการแจ้งเตือนทางอีเมล</label>
+                                        </div>
+                                        <div class="d-grid mt-4">
+                                            <button class="btn btn-primary" id="save-settings">
+                                                <i class="bi bi-save me-2"></i> บันทึกการตั้งค่า
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Actions -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white">
+                                        <h5 class="card-title mb-0">การดำเนินการเพิ่มเติม</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-grid gap-3">
+                                            <a href="/user/upgrade" class="btn btn-outline-primary">
+                                                <i class="bi bi-arrow-up-circle me-2"></i> อัพเกรดแผนสมาชิก
+                                            </a>
+                                            <a href="/user/my-nft" class="btn btn-outline-primary">
+                                                <i class="bi bi-image me-2"></i> อัพเดตรูปภาพ NFT
+                                            </a>
+                                            <a href="/user/referrals" class="btn btn-outline-primary">
+                                                <i class="bi bi-people me-2"></i> จัดการการอ้างอิง
+                                            </a>
+                                            <a href="/user/transactions" class="btn btn-outline-primary">
+                                                <i class="bi bi-list-ul me-2"></i> ดูประวัติธุรกรรม
+                                            </a>
+                                            <a href="/user/exit" class="btn btn-outline-danger">
+                                                <i class="bi bi-box-arrow-left me-2"></i> ยกเลิกสมาชิก
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+    <script src="/js/profile.js"></script>
+</body>
+</html>

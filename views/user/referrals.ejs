@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <%- include('../partials/header') %>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                แดชบอร์ด
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/my-nft">
+                                <i class="bi bi-image me-2"></i>
+                                NFT ของฉัน
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/upgrade">
+                                <i class="bi bi-arrow-up-circle me-2"></i>
+                                อัพเกรดแผนสมาชิก
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/user/referrals">
+                                <i class="bi bi-people me-2"></i>
+                                การอ้างอิง
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/transactions">
+                                <i class="bi bi-list-ul me-2"></i>
+                                ประวัติธุรกรรม
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/profile">
+                                <i class="bi bi-person-circle me-2"></i>
+                                โปรไฟล์
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>การดำเนินการ</span>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/exit">
+                                <i class="bi bi-box-arrow-left me-2"></i>
+                                ยกเลิกสมาชิก
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="disconnectWallet()">
+                                <i class="bi bi-power me-2"></i>
+                                ออกจากระบบ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">การอ้างอิงของฉัน</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="share-btn">
+                            <i class="bi bi-share"></i> แชร์ลิงก์อ้างอิง
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Wallet Connection Check -->
+                <div id="wallet-not-connected" class="alert alert-warning d-flex align-items-center" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>
+                        คุณยังไม่ได้เชื่อมต่อกระเป๋าเงิน กรุณา <a href="#" onclick="connectWallet()" class="alert-link">เชื่อมต่อกระเป๋าเงิน</a> เพื่อดูข้อมูลการอ้างอิงของคุณ
+                    </div>
+                </div>
+                
+                <!-- Main Referrals Content (Hidden until wallet connected) -->
+                <div id="referrals-content" class="d-none">
+                    <!-- Overview Cards -->
+                    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                            <i class="bi bi-people text-primary fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="card-subtitle text-muted mb-1">การอ้างอิงทั้งหมด</h6>
+                                            <h4 class="card-title mb-0" id="total-referrals">0</h4>
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">จำนวนสมาชิกที่คุณแนะนำเข้าร่วมระบบ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                                            <i class="bi bi-currency-dollar text-success fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="card-subtitle text-muted mb-1">รายได้ทั้งหมด</h6>
+                                            <h4 class="card-title mb-0" id="total-earnings">0 USDT</h4>
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">รายได้ทั้งหมดที่คุณได้รับจากการอ้างอิง</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                                            <i class="bi bi-percent text-info fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="card-subtitle text-muted mb-1">อัตราค่าคอมมิชชั่น</h6>
+                                            <h4 class="card-title mb-0" id="commission-rate">60%</h4>
+                                        </div>
+                                    </div>
+                                    <p class="card-text text-muted">อัตราค่าคอมมิชชั่นของแผน <span id="current-plan">-</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Referral Link Section -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title mb-0">ลิงก์การอ้างอิงของฉัน</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted">แชร์ลิงก์นี้กับเพื่อนของคุณเพื่อรับค่าคอมมิชชั่น เมื่อพวกเขาลงทะเบียนผ่านลิงก์นี้</p>
+                            <div class="input-group mb-3">
+                                <input type="text" id="referral-link" class="form-control" readonly>
+                                <button class="btn btn-outline-primary" type="button" id="copy-referral-link">
+                                    <i class="bi bi-clipboard"></i> คัดลอก
+                                </button>
+                            </div>
+                            
+                            <p class="fw-bold mt-4">แชร์ผ่านโซเชียลมีเดีย</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button class="btn btn-outline-primary" id="share-twitter">
+                                    <i class="bi bi-twitter"></i> Twitter
+                                </button>
+                                <button class="btn btn-outline-primary" id="share-facebook">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </button>
+                                <button class="btn btn-outline-primary" id="share-telegram">
+                                    <i class="bi bi-telegram"></i> Telegram
+                                </button>
+                                <button class="btn btn-outline-primary" id="share-line">
+                                    <i class="bi bi-line"></i> Line
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Referral Tips -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="card-title mb-0">เทคนิคการชวนเพื่อน</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6 class="mb-3">วิธีที่มีประสิทธิภาพในการอ้างอิง:</h6>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            แชร์ประสบการณ์ของคุณกับ Crypto Membership NFT
+                                        </li>
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            อธิบายประโยชน์ที่จะได้รับเมื่อเข้าร่วมเป็นสมาชิก
+                                        </li>
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            แชร์ลิงก์อ้างอิงของคุณในกลุ่มที่เกี่ยวกับ Crypto และ NFT
+                                        </li>
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                            สร้างเนื้อหาที่น่าสนใจเกี่ยวกับโครงการนี้
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="mb-3">สิ่งที่ควรหลีกเลี่ยง:</h6>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                            ส่งสแปมหรือยัดเยียดลิงก์อ้างอิง
+                                        </li>
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                            ให้ข้อมูลที่ไม่ถูกต้องหรือเกินจริง
+                                        </li>
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                            สัญญาว่าจะได้รับผลตอบแทนที่มากเกินไป
+                                        </li>
+                                        <li class="list-group-item bg-transparent ps-0">
+                                            <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                            ละเมิดนโยบายของแพลตฟอร์มโซเชียลมีเดีย
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Earnings History -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">ประวัติรายได้จากการอ้างอิง</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Loading state -->
+                            <div id="earnings-loading" class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">กำลังโหลด...</span>
+                                </div>
+                                <p class="mt-3">กำลังโหลดข้อมูลรายได้...</p>
+                            </div>
+                            
+                            <!-- Earnings content -->
+                            <div id="earnings-content" class="d-none">
+                                <!-- No earnings found -->
+                                <div id="no-earnings" class="d-none">
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle-fill me-2"></i>
+                                        ยังไม่มีประวัติรายได้จากการอ้างอิง เริ่มแชร์ลิงก์การอ้างอิงของคุณเพื่อรับรายได้
+                                    </div>
+                                </div>
+                                
+                                <!-- Earnings table -->
+                                <div id="earnings-table" class="d-none">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="bg-light">
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">วันที่</th>
+                                                    <th scope="col">จากสมาชิก</th>
+                                                    <th scope="col" class="text-end">จำนวน</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="earnings-tbody">
+                                                <!-- จะถูกเติมด้วย JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+    <script src="/js/referrals.js"></script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <%- include('../partials/header') %>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/dashboard">
+                                <i class="bi bi-speedometer2 me-2"></i>
+                                แดชบอร์ด
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/my-nft">
+                                <i class="bi bi-image me-2"></i>
+                                NFT ของฉัน
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/upgrade">
+                                <i class="bi bi-arrow-up-circle me-2"></i>
+                                อัพเกรดแผนสมาชิก
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/referrals">
+                                <i class="bi bi-people me-2"></i>
+                                การอ้างอิง
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/transactions">
+                                <i class="bi bi-list-ul me-2"></i>
+                                ประวัติธุรกรรม
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/profile">
+                                <i class="bi bi-person-circle me-2"></i>
+                                โปรไฟล์
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>การดำเนินการ</span>
+                    </h6>
+                    <ul class="nav flex-column mb-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/user/exit">
+                                <i class="bi bi-box-arrow-left me-2"></i>
+                                ยกเลิกสมาชิก
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="disconnectWallet()">
+                                <i class="bi bi-power me-2"></i>
+                                ออกจากระบบ
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">ยกเลิกสมาชิก</h1>
+                </div>
+                
+                <!-- Wallet Connection Check -->
+                <div id="wallet-not-connected" class="alert alert-warning d-flex align-items-center" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>
+                        คุณยังไม่ได้เชื่อมต่อกระเป๋าเงิน กรุณา <a href="#" onclick="connectWallet()" class="alert-link">เชื่อมต่อกระเป๋าเงิน</a> เพื่อดำเนินการ
+                    </div>
+                </div>
+                
+                <!-- Main Exit Content (Hidden until wallet connected) -->
+                <div id="exit-content" class="d-none">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white py-3">
+                                    <h4 class="card-title mb-0">ยกเลิกการเป็นสมาชิก</h4>
+                                </div>
+                                <div class="card-body p-4">
+                                    <!-- Loading State -->
+                                    <div id="loading-status" class="text-center py-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">กำลังโหลด...</span>
+                                        </div>
+                                        <p class="mt-3">กำลังโหลดข้อมูลสมาชิก...</p>
+                                    </div>
+                                    
+                                    <!-- Not a Member -->
+                                    <div id="not-member" class="d-none">
+                                        <div class="alert alert-info">
+                                            <i class="bi bi-info-circle-fill me-2"></i>
+                                            คุณไม่ได้เป็นสมาชิกในระบบ ไม่สามารถดำเนินการยกเลิกสมาชิกได้
+                                        </div>
+                                        <div class="text-center mt-4">
+                                            <a href="/user/register" class="btn btn-primary">ลงทะเบียนเป็นสมาชิก</a>
+                                            <a href="/" class="btn btn-outline-secondary ms-2">กลับหน้าหลัก</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Error Loading -->
+                                    <div id="error-loading" class="d-none">
+                                        <div class="alert alert-danger">
+                                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                            ไม่สามารถโหลดข้อมูลสมาชิกได้: <span id="error-message">เกิดข้อผิดพลาด</span>
+                                        </div>
+                                        <div class="text-center mt-4">
+                                            <button class="btn btn-primary" onclick="initExitPage()">ลองใหม่</button>
+                                            <a href="/user/dashboard" class="btn btn-outline-secondary ms-2">กลับไปที่แดชบอร์ด</a>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Member Details -->
+                                    <div id="member-details" class="d-none">
+                                        <p class="alert alert-warning">
+                                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                            <strong>คำเตือน:</strong> การยกเลิกสมาชิกจะเป็นการลบ NFT สมาชิกของคุณถาวร และไม่สามารถเรียกคืนได้
+                                        </p>
+                                        
+                                        <div class="mb-4">
+                                            <h5>ข้อมูลสมาชิกของคุณ:</h5>
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th style="width: 40%">แผนสมาชิกปัจจุบัน:</th>
+                                                        <td id="current-plan">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>วันที่ลงทะเบียน:</th>
+                                                        <td id="register-date">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>วันที่สามารถยกเลิกได้:</th>
+                                                        <td id="exit-available-date">-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>เงินคืนที่จะได้รับ (30%):</th>
+                                                        <td id="refund-amount" class="text-success">-</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Exit Not Available Yet -->
+                                        <div id="exit-not-available" class="alert alert-info d-none">
+                                            <i class="bi bi-info-circle-fill me-2"></i>
+                                            คุณจะสามารถยกเลิกสมาชิกได้หลังจากเป็นสมาชิกครบ 30 วัน (อีก <span id="days-remaining">-</span> วัน)
+                                        </div>
+                                        
+                                        <!-- Exit Available -->
+                                        <div id="exit-available" class="alert alert-success d-none">
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+                                            คุณสามารถยกเลิกสมาชิกได้แล้ว และจะได้รับเงินคืน 30% ของค่าสมัครสมาชิก
+                                        </div>
+                                        
+                                        <div class="d-grid gap-2 mt-4">
+                                            <button id="exit-button" class="btn btn-danger btn-lg" disabled>
+                                                <i class="bi bi-box-arrow-left me-2"></i> ยกเลิกสมาชิก
+                                            </button>
+                                            <a href="/user/dashboard" class="btn btn-outline-secondary">
+                                                <i class="bi bi-arrow-left me-2"></i> กลับไปที่แดชบอร์ด
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exit Process -->
+                <div id="exit-process" class="d-none">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-5 text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">กำลังประมวลผล...</span>
+                                    </div>
+                                    <h4 class="mt-3">กำลังดำเนินการยกเลิกสมาชิก</h4>
+                                    <p class="text-muted">กรุณารอสักครู่ กำลังดำเนินการบนบล็อกเชน...</p>
+                                    <div class="progress mt-4">
+                                        <div id="exit-progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%"></div>
+                                    </div>
+                                    <p id="exit-status" class="mt-2">กำลังเตรียมการยกเลิกสมาชิก...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exit Success -->
+                <div id="exit-success" class="d-none">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-5 text-center">
+                                    <div class="display-1 text-success">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                    </div>
+                                    <h3 class="mt-4">ยกเลิกสมาชิกสำเร็จ!</h3>
+                                    <p class="text-muted">คุณได้ยกเลิกการเป็นสมาชิก Crypto Membership NFT เรียบร้อยแล้ว</p>
+                                    
+                                    <div class="alert alert-success mt-4">
+                                        <p>เงินคืน 30% ได้ถูกโอนไปยังกระเป๋าเงินของคุณเรียบร้อยแล้ว</p>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <a href="/" class="btn btn-primary">กลับไปที่หน้าหลัก</a>
+                                        <a href="/user/register" class="btn btn-outline-primary ms-2">ลงทะเบียนใหม่</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exit Error -->
+                <div id="exit-error" class="d-none">
+                    <div class="row">
+                        <div class="col-lg-8 mx-auto">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-5 text-center">
+                                    <div class="display-1 text-danger">
+                                        <i class="bi bi-exclamation-circle-fill"></i>
+                                    </div>
+                                    <h3 class="mt-4">เกิดข้อผิดพลาด</h3>
+                                    <p class="text-muted">ไม่สามารถยกเลิกสมาชิกได้ โปรดลองใหม่อีกครั้ง</p>
+                                    
+                                    <div class="alert alert-danger mt-4">
+                                        <p id="error-details">ไม่สามารถยกเลิกสมาชิกได้ เนื่องจากเกิดข้อผิดพลาด</p>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <button class="btn btn-primary" onclick="initExitPage()">ลองใหม่</button>
+                                        <a href="/user/dashboard" class="btn btn-outline-secondary ms-2">กลับไปที่แดชบอร์ด</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Exit Confirmation Modal -->
+    <div class="modal fade" id="exitConfirmationModal" tabindex="-1" aria-labelledby="exitConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exitConfirmationModalLabel">ยืนยันการยกเลิกสมาชิก</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <strong>คำเตือน:</strong> การดำเนินการนี้ไม่สามารถเรียกคืนได้
+                    </div>
+                    <p>คุณกำลังจะยกเลิกการเป็นสมาชิก Crypto Membership NFT ซึ่งจะมีผลดังนี้:</p>
+                    <ul>
+                        <li>NFT สมาชิกของคุณจะถูกลบถาวร</li>
+                        <li>คุณจะได้รับเงินคืน 30% ของค่าสมัครสมาชิก</li>
+                        <li>คุณจะไม่สามารถเข้าถึงสิทธิประโยชน์ของสมาชิกได้อีกต่อไป</li>
+                        <li>คุณจะไม่ได้รับรายได้จากการอ้างอิงอีกต่อไป</li>
+                    </ul>
+                    <p class="mb-0">คุณแน่ใจหรือไม่ว่าต้องการยกเลิกสมาชิก?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="button" class="btn btn-danger" id="confirm-exit-button">
+                        <i class="bi bi-box-arrow-left me-2"></i> ยืนยันการยกเลิกสมาชิก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <%- include('../partials/footer') %>
+    <script src="/js/exit.js"></script>
+</body>
+</html>
