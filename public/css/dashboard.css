@@ -1,0 +1,233 @@
+/* Dashboard Specific Styles */
+
+body {
+    font-size: 0.875rem;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  }
+  
+  @media (max-width: 767.98px) {
+    .sidebar {
+      top: 5rem;
+    }
+  }
+  
+  .sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  
+  .sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .sidebar .nav-link:hover {
+    color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+  
+  .sidebar .nav-link.active {
+    color: #fff;
+    background-color: #007bff;
+  }
+  
+  .sidebar .nav-link i {
+    margin-right: 0.5rem;
+  }
+  
+  .sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+  }
+  
+  /* Dashboard content */
+  .dashboard-content {
+    margin-top: 1.5rem;
+  }
+  
+  /* Cards */
+  .dashboard-card {
+    border-radius: 0.5rem;
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .dashboard-card .card-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6c757d;
+  }
+  
+  .dashboard-card .card-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+  }
+  
+  /* NFT card */
+  .nft-card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .nft-card .card-img-top {
+    max-height: 200px;
+    object-fit: cover;
+  }
+  
+  .nft-card .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  /* Referral section */
+  .referral-input-group {
+    margin-bottom: 1rem;
+  }
+  
+  .social-share-buttons .btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .social-share-buttons .btn:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Transactions table */
+  .transactions-table th {
+    font-weight: 500;
+    color: #6c757d;
+    background-color: #f8f9fa;
+    border-top: none;
+  }
+  
+  .transactions-table td {
+    vertical-align: middle;
+    padding: 1rem 0.75rem;
+  }
+  
+  .transactions-badge {
+    padding: 0.4em 0.6em;
+    font-size: 75%;
+    font-weight: 500;
+    border-radius: 0.25rem;
+  }
+  
+  /* Progress indicators */
+  .loading-spinner {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0.15em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+  }
+  
+  /* Dashboard KPI indicator cards */
+  .kpi-card {
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    height: 100%;
+    background-color: #fff;
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  }
+  
+  .kpi-card .icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 123, 255, 0.1);
+  }
+  
+  .kpi-card .icon-circle i {
+    font-size: 1.5rem;
+    color: #007bff;
+  }
+  
+  .kpi-card .card-title {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    color: #6c757d;
+  }
+  
+  .kpi-card .card-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 767.98px) {
+    .dashboard-card .card-value {
+      font-size: 1.25rem;
+    }
+    
+    .kpi-card {
+      padding: 1rem;
+    }
+    
+    .kpi-card .icon-circle {
+      width: 36px;
+      height: 36px;
+    }
+    
+    .kpi-card .icon-circle i {
+      font-size: 1.25rem;
+    }
+    
+    .transactions-table th, 
+    .transactions-table td {
+      padding: 0.5rem;
+    }
+  }
+  
+  /* Main content area */
+  .main {
+    padding-top: 1.5rem;
+  }
+  
+  /* Dashboard header */
+  .dashboard-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+  }

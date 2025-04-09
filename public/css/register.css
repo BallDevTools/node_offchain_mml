@@ -1,0 +1,242 @@
+/* Registration Page Specific Styles */
+
+/* Container spacing */
+.container {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+/* Registration card */
+.registration-card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+.registration-card .card-header {
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.registration-card .card-body {
+  padding: 2rem;
+}
+
+/* Plan selection */
+.plan-card {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-width: 2px;
+  height: 100%;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.plan-card.selected {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.plan-card .card-header {
+  padding: 1rem;
+  text-align: center;
+}
+
+.plan-card .card-body {
+  padding: 1rem;
+}
+
+.plan-card .pricing-card-title {
+  margin: 1rem 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.plan-card .btn {
+  margin-top: 1rem;
+}
+
+/* Disabled plans */
+.disabled-plan {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Progress indicators */
+.registration-progress {
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Success and error states */
+.registration-success .display-1,
+.registration-error .display-1 {
+  font-size: 5rem;
+}
+
+.success-icon {
+  color: #28a745;
+}
+
+.error-icon {
+  color: #dc3545;
+}
+
+/* Payment info section */
+.payment-info-card {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.payment-info-card p {
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.payment-info-card h5 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Buttons */
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+  border-radius: 0.3rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+/* Form elements */
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.form-check {
+  margin-top: 1rem;
+}
+
+/* Alerts */
+.alert {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.alert i {
+  margin-right: 0.5rem;
+}
+
+/* Process steps visualization */
+.process-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.process-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1rem;
+  right: -50%;
+  width: 100%;
+  height: 2px;
+  background-color: #e9ecef;
+  z-index: 0;
+}
+
+.process-step.active:not(:last-child)::after {
+  background-color: #007bff;
+}
+
+.step-number {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
+  font-weight: 500;
+}
+
+.process-step.active .step-number {
+  background-color: #007bff;
+  color: white;
+}
+
+.process-step.completed .step-number {
+  background-color: #28a745;
+  color: white;
+}
+
+.step-title {
+  font-size: 0.875rem;
+  color: #6c757d;
+  text-align: center;
+}
+
+.process-step.active .step-title {
+  color: #007bff;
+  font-weight: 500;
+}
+
+.process-step.completed .step-title {
+  color: #28a745;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .registration-card .card-body {
+    padding: 1.5rem;
+  }
+  
+  .plan-card .card-body {
+    padding: 0.75rem;
+  }
+  
+  .registration-success .display-1,
+  .registration-error .display-1 {
+    font-size: 4rem;
+  }
+  
+  .process-steps {
+    display: none;
+  }
+}

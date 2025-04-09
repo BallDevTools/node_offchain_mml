@@ -1,0 +1,294 @@
+/* Main Styles for Crypto Membership NFT */
+
+/* Common Styles */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --body-bg: #f5f8fa;
+    --header-height: 60px;
+    --footer-height: 250px;
+    --sidebar-width: 250px;
+    --font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    background-color: var(--body-bg);
+    min-height: 100vh;
+    padding-bottom: var(--footer-height);
+    position: relative;
+  }
+  
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+  }
+  
+  .text-primary {
+    color: var(--primary-color) !important;
+  }
+  
+  /* Layout */
+  .container {
+    padding: 20px 15px;
+  }
+  
+  /* Header & Navbar */
+  .navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand img {
+    max-height: 40px;
+  }
+  
+  /* Wallet Connection */
+  .wallet-status {
+    transition: all 0.3s ease;
+  }
+  
+  /* Cards */
+  .card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+    border: none;
+  }
+  
+  .card-header {
+    font-weight: 600;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  /* Buttons */
+  .btn {
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 500;
+  }
+  
+  .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }
+  
+  .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  /* Forms */
+  .form-control {
+    border-radius: 6px;
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+  }
+  
+  .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  
+  /* Alerts */
+  .alert {
+    border-radius: 6px;
+    border: none;
+  }
+  
+  /* Badges */
+  .badge {
+    padding: 5px 10px;
+    font-weight: 500;
+    border-radius: 4px;
+  }
+  
+  /* Footer */
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--dark-color);
+    color: white;
+    padding: 20px 0;
+  }
+  
+  footer a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Dashboard Sidebar */
+  .sidebar {
+    position: fixed;
+    top: var(--header-height);
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    background-color: white;
+    box-shadow: 1px 0px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .sidebar .nav-link {
+    font-weight: 500;
+    color: var(--secondary-color);
+    padding: 12px 16px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+  }
+  
+  .sidebar .nav-link:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: var(--primary-color);
+  }
+  
+  .sidebar .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .sidebar .nav-link i {
+    margin-right: 8px;
+  }
+  
+  .sidebar-heading {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+  }
+  
+  /* Tables */
+  .table {
+    background-color: white;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .table thead th {
+    background-color: var(--light-color);
+    font-weight: 600;
+    border-top: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .table td, .table th {
+    padding: 12px 16px;
+    vertical-align: middle;
+  }
+  
+  /* Notifications */
+  .toast {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .toast-header {
+    border-radius: 8px 8px 0 0;
+    padding: 12px 16px;
+  }
+  
+  .toast-body {
+    padding: 12px 16px;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+    
+    .card-body {
+      padding: 1rem;
+    }
+    
+    .sidebar {
+      position: static;
+      width: 100%;
+      height: auto;
+    }
+    
+    .btn {
+      padding: 6px 12px;
+    }
+    
+    :root {
+      --footer-height: 350px;
+    }
+  }
+  
+  /* Utility classes */
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .overflow-hidden {
+    overflow: hidden;
+  }
+  
+  .text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Dark mode support (if needed later) */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --body-bg: #121212; 
+    }
+    
+    /* Add dark mode styles if needed */
+  }

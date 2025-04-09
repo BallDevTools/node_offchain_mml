@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <%- include('../partials/header') %>
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h4 class="card-title mb-0">อัพเกรดแผนสมาชิก</h4>
+                    </div>
+                    <div class="card-body p-lg-5">
+                        <!-- Wallet Connection Check -->
+                        <div id="wallet-not-connected" class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div>
+                                คุณยังไม่ได้เชื่อมต่อกระเป๋าเงิน กรุณา <a href="#" onclick="connectWallet()" class="alert-link">เชื่อมต่อกระเป๋าเงิน</a> เพื่ออัพเกรดแผนสมาชิก
+                            </div>
+                        </div>
+                        
+                        <!-- Not a Member Alert (Hidden initially) -->
+                        <div id="not-member" class="alert alert-info d-none" role="alert">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            คุณยังไม่ได้เป็นสมาชิก กรุณา <a href="/user/register" class="alert-link">ลงทะเบียนเป็นสมาชิก</a> ก่อนอัพเกรดแผนสมาชิก
+                        </div>
+                        
+                        <!-- Upgrade Form (Hidden initially) -->
+                        <div id="upgrade-form" class="d-none">
+                            <p class="text-muted mb-4">เลือกแผนสมาชิกที่คุณต้องการอัพเกรด การอัพเกรดจะคิดค่าใช้จ่ายเพิ่มเติมจากแผนปัจจุบันของคุณ</p>
+                            
+                            <!-- Current Plan Info -->
+                            <div class="alert alert-light mb-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <h6 class="mb-1">แผนสมาชิกปัจจุบัน</h6>
+                                        <h5 id="current-plan-name" class="mb-0 text-primary">กำลังโหลด...</h5>
+                                    </div>
+                                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                                        <h6 class="mb-1">USDT คงเหลือ</h6>
+                                        <h5 id="usdt-balance" class="mb-0">กำลังโหลด...</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Plan Selection -->
+                            <h5 class="mb-3">เลือกแผนสมาชิกที่ต้องการอัพเกรด:</h5>
+                            <div class="plan-selection mb-4">
+                                <div class="row row-cols-1 row-cols-md-4 g-4 mb-3" id="plans-container">
+                                    <!-- Plans will be loaded dynamically -->
+                                    <div class="col text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">กำลังโหลด...</span>
+                                        </div>
+                                        <p class="mt-2">กำลังโหลดแผนสมาชิก...</p>
+                                    </div>
+                                </div>
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    การอัพเกรดสมาชิกสามารถทำได้ครั้งละหนึ่งระดับเท่านั้น และจะคิดค่าใช้จ่ายเพิ่มเติมจากราคาแผนปัจจุบัน
+                                </div>
+                            </div>
+                            
+                            <!-- Payment Information (Hidden until plan selected) -->
+                            <div id="payment-info" class="mb-4 d-none">
+                                <h5 class="mb-3">ข้อมูลการชำระเงิน:</h5>
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p class="mb-1">แผนปัจจุบัน:</p>
+                                                <h5 id="summary-current-plan" class="mb-3">-</h5>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="mb-1">แผนที่จะอัพเกรด:</p>
+                                                <h5 id="summary-new-plan" class="mb-3">-</h5>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p class="mb-1">ราคาเพิ่มเติม:</p>
+                                                <h5 id="summary-price-difference" class="mb-0 text-primary">-</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Approve USDT Button (Hidden until plan selected) -->
+                            <div id="approve-section" class="mb-4 d-none">
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    คุณจำเป็นต้องอนุมัติการใช้ USDT ก่อนที่จะอัพเกรดแผนสมาชิก
+                                </div>
+                                <button id="approve-button" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-check-circle-fill me-2"></i> อนุมัติการใช้ USDT
+                                </button>
+                            </div>
+                            
+                            <!-- Upgrade Button (Hidden until USDT approved) -->
+                            <div id="upgrade-section" class="d-none">
+                                <div class="alert alert-success">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    USDT ได้รับการอนุมัติแล้ว คุณสามารถอัพเกรดแผนสมาชิกได้ทันที
+                                </div>
+                                <button id="upgrade-button" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-arrow-up-circle-fill me-2"></i> อัพเกรดแผนสมาชิก
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Upgrade Process -->
+                        <div id="upgrade-process" class="d-none">
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">กำลังประมวลผล...</span>
+                                </div>
+                                <h4 class="mt-3">กำลังดำเนินการอัพเกรดแผนสมาชิก</h4>
+                                <p class="text-muted">กรุณารอสักครู่ กำลังดำเนินการบนบล็อกเชน...</p>
+                                <div class="progress mt-4">
+                                    <div id="upgrade-progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%"></div>
+                                </div>
+                                <p id="upgrade-status" class="mt-2">กำลังเตรียมการอัพเกรด...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Upgrade Success -->
+                        <div id="upgrade-success" class="d-none">
+                            <div class="text-center py-4">
+                                <div class="display-1 text-success">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                </div>
+                                <h3 class="mt-4">อัพเกรดแผนสมาชิกสำเร็จ!</h3>
+                                <p class="text-muted">แผนสมาชิกของคุณได้รับการอัพเกรดเรียบร้อยแล้ว</p>
+                                
+                                <div class="alert alert-success mt-4">
+                                    <p>NFT สมาชิกของคุณได้รับการอัพเดทเรียบร้อยแล้ว กรุณาไปที่แดชบอร์ดเพื่อดูรายละเอียดเพิ่มเติม</p>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <a href="/user/dashboard" class="btn btn-primary">ไปที่แดชบอร์ด</a>
+                                    <a href="/user/my-nft" class="btn btn-outline-primary ms-2">ดู NFT ของฉัน</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Upgrade Error -->
+                        <div id="upgrade-error" class="d-none">
+                            <div class="text-center py-4">
+                                <div class="display-1 text-danger">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                </div>
+                                <h3 class="mt-4">เกิดข้อผิดพลาด</h3>
+                                <p class="text-muted">ไม่สามารถอัพเกรดแผนสมาชิกได้ โปรดลองใหม่อีกครั้ง</p>
+                                
+                                <div class="alert alert-danger mt-4">
+                                    <p id="error-message">ไม่สามารถอัพเกรดแผนสมาชิกได้ เนื่องจากเกิดข้อผิดพลาด</p>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-primary" onclick="resetUpgrade()">ลองใหม่</button>
+                                    <a href="/user/dashboard" class="btn btn-outline-secondary ms-2">กลับไปที่แดชบอร์ด</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <%- include('../partials/footer') %>
+    
+    <script src="/js/upgrade.js"></script>
+</body>
+</html>
