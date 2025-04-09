@@ -1,0 +1,37 @@
+{
+    "name": "crypto-membership-frontend",
+    "version": "1.0.0",
+    "description": "Frontend for CryptoMembershipNFT smart contract",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js",
+      "dev": "nodemon app.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "ethereum",
+      "blockchain",
+      "nft",
+      "membership",
+      "web3"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+      "axios": "^1.6.7",
+      "body-parser": "^1.20.2",
+      "dotenv": "^16.4.1",
+      "ejs": "^3.1.9",
+      "express": "^4.18.2",
+      "express-session": "^1.18.0",
+      "helmet": "^7.1.0",
+      "method-override": "^3.0.0",
+      "morgan": "^1.10.0",
+      "socket.io": "^4.7.4",
+      "web3": "^4.3.0",
+      "web3-utils": "^4.0.7"
+    },
+    "devDependencies": {
+      "nodemon": "^3.0.3"
+    }
+  }

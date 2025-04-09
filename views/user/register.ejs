@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <%- include('../partials/header') %>
+    <link rel="stylesheet" href="/css/register.css">
+</head>
+<body>
+    <%- include('../partials/navbar') %>
+    
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h4 class="card-title mb-0">ลงทะเบียนสมาชิก</h4>
+                    </div>
+                    <div class="card-body p-lg-5">
+                        <!-- Wallet Connection Check -->
+                        <div id="wallet-not-connected" class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div>
+                                คุณยังไม่ได้เชื่อมต่อกระเป๋าเงิน กรุณา <a href="#" onclick="connectWallet()" class="alert-link">เชื่อมต่อกระเป๋าเงิน</a> เพื่อลงทะเบียนสมาชิก
+                            </div>
+                        </div>
+                        
+                        <!-- Already a Member Alert (Hidden initially) -->
+                        <div id="already-member" class="alert alert-info d-none" role="alert">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            คุณเป็นสมาชิกอยู่แล้ว กรุณาไปที่ <a href="/user/dashboard" class="alert-link">แดชบอร์ด</a> เพื่อดูรายละเอียดสมาชิกของคุณ
+                        </div>
+                        
+                        <!-- Registration Form (Hidden initially) -->
+                        <div id="registration-form" class="d-none">
+                            <p class="text-muted mb-4">กรุณาเลือกแผนสมาชิกที่คุณต้องการและกดปุ่มลงทะเบียนเพื่อเริ่มต้นใช้งาน</p>
+                            
+                            <!-- Plan Selection -->
+                            <h5 class="mb-3">เลือกแผนสมาชิก:</h5>
+                            <div class="plan-selection mb-4">
+                                <div class="row row-cols-1 row-cols-md-3 g-4 mb-3">
+                                    <!-- Only show Plan 1 for now (New members must start at Plan 1) -->
+                                    <div class="col">
+                                        <div class="card h-100 border-primary">
+                                            <div class="card-header bg-primary text-white">
+                                                <h5 class="card-title mb-0">Starter</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <h3 class="card-title pricing-card-title">1 USDT</h3>
+                                                <ul class="list-unstyled mt-3 mb-4">
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> NFT สมาชิกเริ่มต้น</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> การแนะนำสมาชิกใหม่</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> ส่วนแบ่งรายได้ 50/50</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> ค่าคอมมิชชั่น 60%</li>
+                                                </ul>
+                                                <input type="radio" name="planId" value="1" id="plan1" class="d-none" checked>
+                                                <button class="w-100 btn btn-primary" onclick="selectPlan('plan1')">เลือกแผนนี้</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Disabled Plans -->
+                                    <div class="col">
+                                        <div class="card h-100 opacity-50">
+                                            <div class="card-header bg-secondary text-white">
+                                                <h5 class="card-title mb-0">Elite</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <h3 class="card-title pricing-card-title">5 USDT</h3>
+                                                <ul class="list-unstyled mt-3 mb-4">
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> NFT สมาชิกระดับสูง</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> การแนะนำสมาชิกใหม่</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> ส่วนแบ่งรายได้ 55/45</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> ค่าคอมมิชชั่น 60%</li>
+                                                </ul>
+                                                <div class="w-100 btn btn-secondary">ต้องอัพเกรดทีหลัง</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 opacity-50">
+                                            <div class="card-header bg-secondary text-white">
+                                                <h5 class="card-title mb-0">Legend</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <h3 class="card-title pricing-card-title">10 USDT</h3>
+                                                <ul class="list-unstyled mt-3 mb-4">
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> NFT สมาชิกระดับสูงสุด</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> การแนะนำสมาชิกใหม่</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> ส่วนแบ่งรายได้ 58/42</li>
+                                                    <li class="mb-2"><i class="bi bi-check-circle me-2 text-success"></i> ค่าคอมมิชชั่น 60%</li>
+                                                </ul>
+                                                <div class="w-100 btn btn-secondary">ต้องอัพเกรดทีหลัง</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    สมาชิกใหม่ต้องเริ่มที่แผน Starter (1 USDT) จากนั้นสามารถอัพเกรดไปยังแผนที่สูงขึ้นได้ในภายหลัง
+                                </div>
+                            </div>
+                            
+                            <!-- Upline Information -->
+                            <div class="mb-4">
+                                <h5 class="mb-3">ข้อมูลผู้แนะนำ:</h5>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="uplineAddress" placeholder="ที่อยู่กระเป๋า Ethereum ของผู้แนะนำ (ไม่บังคับ)" value="<%= upline %>">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="clearUpline()">ล้าง</button>
+                                </div>
+                                <div class="form-text">หากไม่มีผู้แนะนำ ระบบจะใช้ที่อยู่ของเจ้าของสัญญาเป็นผู้แนะนำโดยอัตโนมัติ</div>
+                            </div>
+                            
+                            <!-- Payment Information -->
+                            <div class="mb-4">
+                                <h5 class="mb-3">ข้อมูลการชำระเงิน:</h5>
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <p class="mb-1">แผนสมาชิกที่เลือก:</p>
+                                                <h5 class="mb-3">Starter</h5>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <p class="mb-1">ราคา:</p>
+                                                <h5>1 USDT</h5>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <p class="mb-1">USDT คงเหลือ:</p>
+                                                <h5 id="usdt-balance">กำลังโหลด...</h5>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <p class="mb-1">กระเป๋าที่ใช้สมัคร:</p>
+                                                <h5 id="wallet-address">กำลังโหลด...</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Approve USDT Button -->
+                            <div id="approve-section" class="mb-4">
+                                <div class="alert alert-warning">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    คุณจำเป็นต้องอนุมัติการใช้ USDT ก่อนที่จะลงทะเบียนสมาชิก
+                                </div>
+                                <button id="approve-button" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-check-circle-fill me-2"></i> อนุมัติการใช้ USDT
+                                </button>
+                            </div>
+                            
+                            <!-- Register Button -->
+                            <div id="register-section" class="d-none">
+                                <div class="alert alert-success">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    USDT ได้รับการอนุมัติแล้ว คุณสามารถลงทะเบียนสมาชิกได้ทันที
+                                </div>
+                                <button id="register-button" class="btn btn-primary btn-lg w-100">
+                                    <i class="bi bi-person-plus-fill me-2"></i> ลงทะเบียนสมาชิก
+                                </button>
+                            </div>
+                            
+                            <!-- Terms and Conditions -->
+                            <div class="form-check mt-4">
+                                <input class="form-check-input" type="checkbox" id="terms-check" checked>
+                                <label class="form-check-label" for="terms-check">
+                                    ฉันได้อ่านและยอมรับ <a href="/terms" target="_blank">ข้อตกลงการใช้บริการ</a> และ <a href="/privacy" target="_blank">นโยบายความเป็นส่วนตัว</a>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Registration Process -->
+                        <div id="registration-process" class="d-none">
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">กำลังประมวลผล...</span>
+                                </div>
+                                <h4 class="mt-3">กำลังดำเนินการลงทะเบียนสมาชิก</h4>
+                                <p class="text-muted">กรุณารอสักครู่ กำลังดำเนินการบนบล็อกเชน...</p>
+                                <div class="progress mt-4">
+                                    <div id="registration-progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 25%"></div>
+                                </div>
+                                <p id="registration-status" class="mt-2">กำลังเตรียมการลงทะเบียน...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Registration Success -->
+                        <div id="registration-success" class="d-none">
+                            <div class="text-center py-4">
+                                <div class="display-1 text-success">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                </div>
+                                <h3 class="mt-4">ลงทะเบียนสมาชิกสำเร็จ!</h3>
+                                <p class="text-muted">ยินดีต้อนรับสู่ Crypto Membership NFT</p>
+                                
+                                <div class="alert alert-success mt-4">
+                                    <p>คุณได้รับ NFT สมาชิกเรียบร้อยแล้ว กรุณาไปที่แดชบอร์ดเพื่อดูรายละเอียดเพิ่มเติม</p>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <a href="/user/dashboard" class="btn btn-primary">ไปที่แดชบอร์ด</a>
+                                    <a href="/user/my-nft" class="btn btn-outline-primary ms-2">ดู NFT ของฉัน</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Registration Error -->
+                        <div id="registration-error" class="d-none">
+                            <div class="text-center py-4">
+                                <div class="display-1 text-danger">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                </div>
+                                <h3 class="mt-4">เกิดข้อผิดพลาด</h3>
+                                <p class="text-muted">ไม่สามารถลงทะเบียนสมาชิกได้ โปรดลองใหม่อีกครั้ง</p>
+                                
+                                <div class="alert alert-danger mt-4">
+                                    <p id="error-message">ไม่สามารถลงทะเบียนสมาชิกได้ เนื่องจากเกิดข้อผิดพลาด</p>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-primary" onclick="resetRegistration()">ลองใหม่</button>
+                                    <a href="/" class="btn btn-outline-secondary ms-2">กลับหน้าหลัก</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <%- include('../partials/footer') %>
+    
+    <script src="/js/register.js"></script>
+</body>
+</html>

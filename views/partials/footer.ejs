@@ -1,0 +1,84 @@
+<!-- Notification Container -->
+<div id="notification-container" class="position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+
+<!-- Footer -->
+<footer class="bg-dark text-light py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5>Crypto Membership NFT</h5>
+                <p class="text-muted">สัญญาสมาชิก NFT พร้อมระบบอ้างอิงและการจัดการแผนสมาชิก</p>
+                <div class="social-icons mt-3">
+                    <a href="#" class="text-light me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-light me-3"><i class="bi bi-telegram"></i></a>
+                    <a href="#" class="text-light me-3"><i class="bi bi-discord"></i></a>
+                    <a href="#" class="text-light me-3"><i class="bi bi-medium"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2 mb-4 mb-md-0">
+                <h6>สมาชิก</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/user/register" class="text-muted">สมัครสมาชิก</a></li>
+                    <li class="mb-2"><a href="/user/dashboard" class="text-muted">แดชบอร์ด</a></li>
+                    <li class="mb-2"><a href="/user/upgrade" class="text-muted">อัพเกรดแผน</a></li>
+                    <li class="mb-2"><a href="/user/my-nft" class="text-muted">NFT ของฉัน</a></li>
+                    <li class="mb-2"><a href="/user/referrals" class="text-muted">การอ้างอิง</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 mb-4 mb-md-0">
+                <h6>ข้อมูล</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="/about" class="text-muted">เกี่ยวกับเรา</a></li>
+                    <li class="mb-2"><a href="/faq" class="text-muted">คำถามที่พบบ่อย</a></li>
+                    <li class="mb-2"><a href="/contact" class="text-muted">ติดต่อเรา</a></li>
+                    <li class="mb-2"><a href="https://etherscan.io/address/<%= typeof contractConfig !== 'undefined' && contractConfig.contractAddress ? contractConfig.contractAddress : '' %>" target="_blank" class="text-muted">ดูสัญญาบน Etherscan</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6>ติดต่อเรา</h6>
+                <p class="text-muted">มีคำถามหรือข้อสงสัย? ติดต่อเราได้ที่</p>
+                <a href="mailto:contact@cryptomembership.com" class="text-muted d-block mb-2">contact@cryptomembership.com</a>
+                <a href="#" class="btn btn-outline-light mt-2">ติดต่อเรา</a>
+            </div>
+        </div>
+        <hr class="mt-4 mb-3 bg-secondary">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="small text-muted mb-0">© <%= new Date().getFullYear() %> Crypto Membership NFT. สงวนลิขสิทธิ์.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item"><a href="/terms" class="text-muted small">ข้อตกลงการใช้บริการ</a></li>
+                    <li class="list-inline-item mx-3">|</li>
+                    <li class="list-inline-item"><a href="/privacy" class="text-muted small">นโยบายความเป็นส่วนตัว</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts below footer -->
+<script src="/js/notification.js"></script>
+<script src="/js/web3-utils.js"></script>
+<script src="/js/transaction-handler.js"></script>
+
+<script>
+    // Initialize notification handler when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.notificationHandler) {
+            window.notificationHandler.init();
+        }
+        
+        // Initialize transaction handler if available
+        if (window.transactionHandler) {
+            window.transactionHandler.init().then(function(success) {
+                if (success) {
+                    console.log('Web3 and transaction handler initialized successfully');
+                    document.dispatchEvent(new CustomEvent('web3-initialized'));
+                }
+            }).catch(function(error) {
+                console.error('Failed to initialize transaction handler', error);
+            });
+        }
+    });
+</script>
