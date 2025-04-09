@@ -1,0 +1,379 @@
+/* CSS สำหรับหน้าหลัก (home.css) */
+
+/* หน้าหลัก - Hero Section */
+.hero {
+    background: linear-gradient(135deg, #0d6efd 0%, #084298 100%);
+    padding: 120px 0;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(to right bottom, transparent 49%, #fff 50%);
+    z-index: 1;
+  }
+  
+  .hero h1 {
+    font-weight: 700;
+    margin-bottom: 24px;
+    font-size: 3rem;
+  }
+  
+  .hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 90%;
+    margin-bottom: 32px;
+  }
+  
+  .hero img {
+    transform: perspective(1000px) rotateY(-15deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    transition: all 0.5s ease;
+  }
+  
+  .hero img:hover {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  
+  /* หน้าหลัก - Feature Cards */
+  .features {
+    padding: 60px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .feature-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-card .card-img-top {
+    height: 180px;
+    object-fit: cover;
+  }
+  
+  .feature-card .card-body {
+    padding: 24px;
+  }
+  
+  .feature-card .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(13, 110, 253, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .feature-card .icon-circle i {
+    font-size: 24px;
+    color: #0d6efd;
+  }
+  
+  /* หน้าหลัก - How It Works Section */
+  .how-it-works {
+    padding: 80px 0;
+  }
+  
+  .step-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+    height: 100%;
+  }
+  
+  .step-card .step-number {
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #0d6efd;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    z-index: 2;
+  }
+  
+  .step-card h5 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+  
+  .step-connector {
+    position: relative;
+    height: 2px;
+    background-color: #0d6efd;
+    margin: 60px auto;
+    width: 80%;
+    display: none;
+  }
+  
+  /* หน้าหลัก - Testimonials */
+  .testimonials {
+    background-color: #f8f9fa;
+    padding: 80px 0;
+  }
+  
+  .testimonial-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
+  }
+  
+  .testimonial-card .quotation {
+    font-size: 4rem;
+    color: #e9ecef;
+    line-height: 0;
+    margin-bottom: 20px;
+    display: block;
+  }
+  
+  .testimonial-card p {
+    font-style: italic;
+    line-height: 1.6;
+  }
+  
+  .testimonial-card .testimonial-author {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .testimonial-card .testimonial-author img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+  }
+  
+  .testimonial-card .testimonial-author .author-info {
+    line-height: 1.2;
+  }
+  
+  .testimonial-card .testimonial-author .author-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .testimonial-card .testimonial-author .author-title {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  
+  /* หน้าหลัก - CTA Section */
+  .cta-section {
+    background: linear-gradient(135deg, #0d6efd 0%, #084298 100%);
+    padding: 80px 0;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .cta-section h2 {
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  .cta-section p {
+    max-width: 700px;
+    margin: 0 auto 30px;
+    opacity: 0.9;
+  }
+  
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  /* หน้าหลัก - Partners Section */
+  .partners {
+    padding: 60px 0;
+  }
+  
+  .partners h2 {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .partner-logo {
+    height: 60px;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+  
+  .partner-logo:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+  
+  /* ส่วนแสดงราคา - Pricing Section */
+  .pricing {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .pricing-card {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pricing-card.featured {
+    border-color: #0d6efd;
+    box-shadow: 0 10px 25px rgba(13, 110, 253, 0.2);
+  }
+  
+  .pricing-card .card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .pricing-card.featured .card-header {
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  .pricing-card .card-body {
+    padding: 30px;
+  }
+  
+  .pricing-card .price {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .pricing-card .price .currency {
+    font-size: 1.5rem;
+    font-weight: 500;
+    vertical-align: super;
+  }
+  
+  .pricing-card .price .period {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #6c757d;
+  }
+  
+  .pricing-card .features-list {
+    margin-bottom: 30px;
+  }
+  
+  .pricing-card .features-list li {
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .pricing-card .features-list i {
+    margin-right: 10px;
+    color: #28a745;
+  }
+  
+  /* การตอบสนองหน้าจอ - Responsive */
+  @media (max-width: 992px) {
+    .hero {
+      padding: 80px 0;
+    }
+    
+    .hero h1 {
+      font-size: 2.5rem;
+    }
+    
+    .step-connector {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .hero {
+      padding: 60px 0;
+      text-align: center;
+    }
+    
+    .hero p {
+      max-width: 100%;
+    }
+    
+    .hero .btn-lg {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+    
+    .hero img {
+      margin-top: 40px;
+      transform: none;
+    }
+    
+    .hero img:hover {
+      transform: none;
+    }
+    
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  /* เอฟเฟกต์เพิ่มเติม */
+  .fade-in {
+    animation: fadeIn ease 1s;
+  }
+  
+  @keyframes fadeIn {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  
+  .floating {
+    animation: floating 3s ease-in-out infinite;
+  }
+  
+  @keyframes floating {
+    0% {transform: translateY(0px);}
+    50% {transform: translateY(-20px);}
+    100% {transform: translateY(0px);}
+  }
